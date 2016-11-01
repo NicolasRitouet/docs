@@ -7,21 +7,21 @@
   },
   "dependencies": {
     "ejs": "*",
-    "express": "3.0.0",
+    "express": "4.14.0",
     "less-middleware": "*",
-    "markdown": "~0.4.0",
-    "natural": "~0.1.17",
+    "markdown": "~0.5.0",
+    "natural": "~0.4.0",
     "node-markdown": "~0.1.1",
     "nodefly": "~0.1.15",
-    "shelljs": "0.0.8",
-    "walkdir": "0.0.5"
+    "shelljs": "0.7.5",
+    "walkdir": "0.0.11"
   },
   "devDependencies": {
-    "fs-extra": "^0.12.0",
-    "gh-pages": "^0.2.0",
-    "glob": "^4.1.5",
-    "lodash": "^2.4.1",
-    "superagent": "^0.21.0",
+    "fs-extra": "^1.0.0",
+    "gh-pages": "^0.11.0",
+    "glob": "^7.1.1",
+    "lodash": "^4.16.6",
+    "superagent": "^2.3.0",
     "wait-async": "^1.0.1"
   }
 }
