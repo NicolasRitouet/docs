@@ -25,10 +25,13 @@ and this project adheres to
 - ⬆️(docker) upgrade backend image to python 3.13 #973
 - ⬆️(docker) upgrade node images to alpine 3.21
 
-
 ### Removed
 
 - 🔥(back) remove footer endpoint
+
+### Fixed
+
+🐛(frontend) table of content disappearing #982
 
 ## [3.2.1] - 2025-05-06
 
