@@ -34,6 +34,7 @@ import { cssEditor } from '../styles';
 import { DocsBlockNoteEditor } from '../types';
 import { randomColor } from '../utils';
 
+import { AIMenu } from './AI/AI';
 import { BlockNoteSuggestionMenu } from './BlockNoteSuggestionMenu';
 import { BlockNoteToolbar } from './BlockNoteToolBar/BlockNoteToolbar';
 import { CalloutBlock, DividerBlock } from './custom-blocks';
@@ -201,7 +202,7 @@ export const BlockNoteEditor = ({ doc, provider }: BlockNoteEditorProps) => {
         editable={!readOnly}
         theme="light"
       >
-        <AIMenuController />
+        <AIMenuController aiMenu={AIMenu} />
         <BlockNoteSuggestionMenu />
         <BlockNoteToolbar />
       </BlockNoteView>

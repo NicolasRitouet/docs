@@ -5,12 +5,12 @@ import {
   getFormattingToolbarItems,
   useDictionary,
 } from '@blocknote/react';
-import { AIToolbarButton } from '@blocknote/xl-ai';
 import React, { JSX, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useConfig } from '@/core/config/api';
 
+import { AIToolbarButton } from '../AI/AIToolbarButton';
 import { getCalloutFormattingToolbarItems } from '../custom-blocks';
 
 import { AIGroupButton } from './AIButton';
@@ -57,9 +57,9 @@ export const BlockNoteToolbar = () => {
   const formattingToolbar = useCallback(() => {
     return (
       <FormattingToolbar>
-        {toolbarItems}
-
         <AIToolbarButton />
+
+        {toolbarItems}
 
         {/* Extra button to do some AI powered actions */}
         {conf?.AI_FEATURE_ENABLED && <AIGroupButton key="AIButton" />}
