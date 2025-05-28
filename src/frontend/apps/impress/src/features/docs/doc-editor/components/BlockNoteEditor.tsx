@@ -1,3 +1,4 @@
+import { createOpenAI } from '@ai-sdk/openai';
 import { codeBlock } from '@blocknote/code-block';
 import {
   BlockNoteSchema,
@@ -9,11 +10,19 @@ import * as locales from '@blocknote/core/locales';
 import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
 import { useCreateBlockNote } from '@blocknote/react';
+import {
+  AIMenuController,
+  createAIExtension,
+  createBlockNoteAIClient,
+} from '@blocknote/xl-ai';
+import { en as aiEn } from '@blocknote/xl-ai/locales';
+import '@blocknote/xl-ai/style.css';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Y from 'yjs';
 
+import { fetchAPI } from '@/api';
 import { Box, TextErrors } from '@/components';
 import { Doc, useIsCollaborativeEditable } from '@/docs/doc-management';
 import { useAuth } from '@/features/auth';
@@ -62,6 +71,25 @@ export const BlockNoteEditor = ({ doc, provider }: BlockNoteEditorProps) => {
     ? 'Reader'
     : user?.full_name || user?.email || t('Anonymous');
   const showCursorLabels: 'always' | 'activity' | (string & {}) = 'activity';
+
+  const client = createBlockNoteAIClient({
+    baseURL: ``,
+    apiKey: '',
+  });
+  const openai = createOpenAI({
+    ...client.getProviderSettings('openai'),
+    fetch: (input, init) => {
+      // Create a new headers object without the Authorization header
+      const headers = new Headers(init?.headers);
+      headers.delete('Authorization');
+
+      return fetchAPI(`documents/${doc.id}/ai-proxy/`, {
+        ...init,
+        headers,
+      });
+    },
+  });
+  const model = openai.chat('neuralmagic/Meta-Llama-3.1-70B-Instruct-FP8');
 
   const editor: DocsBlockNoteEditor = useCreateBlockNote(
     {
@@ -115,7 +143,17 @@ export const BlockNoteEditor = ({ doc, provider }: BlockNoteEditorProps) => {
         },
         showCursorLabels: showCursorLabels as 'always' | 'activity',
       },
-      dictionary: locales[lang as keyof typeof locales],
+      dictionary: { ...locales[lang as keyof typeof locales], ai: aiEn },
+      extensions: [
+        createAIExtension({
+          stream: false,
+          model,
+          agentCursor: {
+            name: 'Albert',
+            color: '#8bc6ff',
+          },
+        }),
+      ],
       tables: {
         splitCells: true,
         cellBackgroundColor: true,
@@ -163,6 +201,7 @@ export const BlockNoteEditor = ({ doc, provider }: BlockNoteEditorProps) => {
         editable={!readOnly}
         theme="light"
       >
+        <AIMenuController />
         <BlockNoteSuggestionMenu />
         <BlockNoteToolbar />
       </BlockNoteView>
