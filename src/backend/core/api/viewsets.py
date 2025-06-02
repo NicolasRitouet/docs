@@ -5,7 +5,7 @@ import json
 import logging
 import uuid
 from collections import defaultdict
-from urllib.parse import unquote, urlparse
+from urllib.parse import unquote, urlparse, urlencode
 
 from django.conf import settings
 from django.contrib.postgres.aggregates import ArrayAgg
