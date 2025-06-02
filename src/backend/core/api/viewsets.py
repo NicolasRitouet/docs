@@ -1859,4 +1859,5 @@ def notion_import_callback(request):
 def notion_import_run(request):
     if "notion_token" not in request.session:
         raise drf.exceptions.PermissionDenied()
-    return import_notion(request.session['notion_token'])
+    import_notion(request.session["notion_token"])
+    return drf.response.Response({"sava": "oui et toi ?"})

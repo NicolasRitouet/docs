@@ -17,7 +17,7 @@ class Page:
         return f"\n  Page(type={self.type}, id='{self.id}', name='{self.name}')"
 
 
-async def search_notion(token: str, start_cursor: str):
+def search_notion(token: str, start_cursor: str):
     response = requests.post(
         "https://api.notion.com/v1/search",
         headers={
@@ -37,13 +37,13 @@ async def search_notion(token: str, start_cursor: str):
         print(response.text)
 
 
-async def fetch_root_pages(token: str):
+def fetch_root_pages(token: str):
     pages = []
     cursor = None
     has_more = True
 
     while has_more:
-        response = await search_notion(start_cursor=cursor)
+        response = search_notion(token, start_cursor=cursor)
 
         for item in response["results"]:
             if item.get("parent", {}).get("type") == "workspace":
@@ -77,7 +77,8 @@ async def fetch_root_pages(token: str):
 
     return pages
 
-async def fetch_blocks(token: str, block_id: str):
+
+def fetch_blocks(token: str, block_id: str):
     response = requests.get(
         f"https://api.notion.com/v1/blocks/{block_id}/children",
         headers={
@@ -94,13 +95,13 @@ async def fetch_blocks(token: str, block_id: str):
         print(response.text)
 
 
-async def fetch_block_children(token: str, block_id: str):
+def fetch_block_children(token: str, block_id: str):
     blocks = []
     cursor = None
     has_more = True
 
     while has_more:
-        response = await fetch_blocks(block_id)
+        response = fetch_blocks(token, block_id)
 
         blocks.extend(response["results"])
 
@@ -110,18 +111,18 @@ async def fetch_block_children(token: str, block_id: str):
     children = []
     for block in blocks:
         if block["has_children"]:
-            response = await fetch_block_children(block["id"])
+            response = fetch_block_children(token, block["id"])
             children.extend(response)
 
     blocks.extend(children)
     return blocks
 
-async def import_notion(token: str):
+
+def import_notion(token: str):
     """Recursively imports all Notion pages and blocks accessible using the given token."""
-    root_pages = await fetch_root_pages(token)
+    root_pages = fetch_root_pages(token)
     for root_page in root_pages:
-        page_content = await fetch_block_children(token, root_page.id)
+        page_content = fetch_block_children(token, root_page.id)
         print(f"Page {root_page.id}")
         print(page_content)
         print()
-
