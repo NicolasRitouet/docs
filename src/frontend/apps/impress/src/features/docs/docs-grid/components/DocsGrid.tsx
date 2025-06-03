@@ -85,10 +85,14 @@ export const DocsGrid = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      $css={isDragActive ? css`
-        border: 2px dashed var(--c--theme--colors--primary-600);
-        background-color: var(--c--theme--colors--greyscale-050);
-      ` : undefined}
+      $css={
+        isDragActive
+          ? css`
+              border: 2px dashed var(--c--theme--colors--primary-600);
+              background-color: var(--c--theme--colors--greyscale-050);
+            `
+          : undefined
+      }
     >
       <DocsGridLoader isLoading={isRefetching || loading} />
       <Card

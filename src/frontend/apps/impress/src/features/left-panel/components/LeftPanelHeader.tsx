@@ -74,7 +74,7 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
 
   const handleImportFilesystem = () => {
     const fileInput = document.querySelector<HTMLInputElement>(
-      '.--docs--left-panel-header input[type="file"]'
+      '.--docs--left-panel-header input[type="file"]',
     );
     if (fileInput) {
       fileInput.onchange = uploadChanged;
@@ -142,13 +142,30 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
                 disabled={isCreatingDoc}
                 options={[
                   { label: t('From your computer'), disabled: true },
-                  { label: t('Open file...'), callback: handleImportFilesystem, padding: { vertical: 'xs', horizontal: 'md' } },
-                  { label: t('Import files...'), callback: handleImportFiles, padding: { vertical: 'xs', horizontal: 'md' } },
+                  {
+                    label: t('Open file...'),
+                    callback: handleImportFilesystem,
+                    padding: { vertical: 'xs', horizontal: 'md' },
+                  },
+                  {
+                    label: t('Import files...'),
+                    callback: handleImportFiles,
+                    padding: { vertical: 'xs', horizontal: 'md' },
+                  },
                   { label: t('From connected apps'), disabled: true },
-                  { label: t('Import from Notion'), callback: handleImportNotion, padding: { vertical: 'xs', horizontal: 'md' } },
+                  {
+                    label: t('Import from Notion'),
+                    callback: handleImportNotion,
+                    padding: { vertical: 'xs', horizontal: 'md' },
+                  },
                 ]}
               >
-                <Button role="button" tabIndex={0} onClick={createNewDoc} disabled={isCreatingDoc}>
+                <Button
+                  role="button"
+                  tabIndex={0}
+                  onClick={createNewDoc}
+                  disabled={isCreatingDoc}
+                >
                   {t('New doc')}
                 </Button>
               </DropdownMenu>
