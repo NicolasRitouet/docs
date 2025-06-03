@@ -1,4 +1,4 @@
-import { Modal, FileUploader } from '@openfun/cunningham-react';
+import { Modal, ModalSize, FileUploader } from '@openfun/cunningham-react';
 import { t } from 'i18next';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
@@ -50,6 +50,7 @@ export const DocImportModal = ({
       closeOnClickOutside
       title={t('Import files')}
       visible={visible}
+      size={ModalSize.MEDIUM}
     >
       <FileUploader
         width="100%"

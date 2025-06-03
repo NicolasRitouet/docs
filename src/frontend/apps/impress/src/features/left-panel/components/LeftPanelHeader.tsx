@@ -77,7 +77,7 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
       '.--docs--left-panel-header input[type="file"]',
     );
     if (fileInput) {
-      fileInput.onchange = uploadChanged;
+      //fileInput.onchange = uploadChanged;
       fileInput.click();
     }
   };
