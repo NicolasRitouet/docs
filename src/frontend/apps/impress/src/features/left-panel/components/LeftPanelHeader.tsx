@@ -72,7 +72,11 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
               )}
             </Box>
 
-            {authenticated && <LeftPanelHeaderButton />}
+            {authenticated && (
+              <>
+                <LeftPanelHeaderButton />
+              </>
+            )}
           </Box>
         </SeparatedSection>
         {children}

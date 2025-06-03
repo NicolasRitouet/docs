@@ -3,6 +3,7 @@ import { Button } from '@openfun/cunningham-react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
+import { Icon } from '@/components';
 import { Doc, useCreateDoc, useDocStore } from '@/features/docs';
 import { useCreateChildrenDoc } from '@/features/docs/doc-tree/api/useCreateChildren';
 import { isOwnerOrAdmin } from '@/features/docs/doc-tree/utils';
@@ -30,10 +31,25 @@ export const LeftPanelHeaderHomeButton = () => {
       togglePanel();
     },
   });
+  const handleImportClick = () => {
+    const baseApiUrl = process.env.NEXT_PUBLIC_API_ORIGIN;
+    const notionAuthUrl = `${baseApiUrl}/api/v1.0/notion_import/redirect`;
+    window.location.href = notionAuthUrl;
+  };
   return (
-    <Button color="primary" onClick={() => createDoc()}>
-      {t('New doc')}
-    </Button>
+    <div className="flex items-center gap-2">
+      <Button color="primary" onClick={() => createDoc()}>
+        {t('New doc')}
+      </Button>
+      <Button
+        onClick={handleImportClick}
+        aria-label="Importer des documents depuis Notion ou Outline"
+        tabIndex={0}
+        size="medium"
+        color="tertiary-text"
+        icon={<Icon $variation="800" $theme="primary" iconName="upload" />}
+      />
+    </div>
   );
 };
 
