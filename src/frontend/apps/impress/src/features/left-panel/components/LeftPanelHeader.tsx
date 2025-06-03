@@ -1,22 +1,23 @@
-import { Button } from '@openfun/cunningham-react';
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useCallback, useState } from 'react';
+import { Button, FileUploader, Modal } from '@openfun/cunningham-react';
+import { t } from 'i18next';
+import { useRouter } from 'next/navigation';
+import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
-import { Box, Icon, SeparatedSection } from '@/components';
-import { DocSearchModal, DocSearchTarget } from '@/docs/doc-search/';
+import { Box, DropdownMenu, Icon, SeparatedSection } from '@/components';
+import { DocImportModal } from '@/features/left-panel/components/DocImportModal';
+import { useCreateDoc } from '@/docs/doc-management';
+import { DocSearchModal } from '@/docs/doc-search';
 import { useAuth } from '@/features/auth';
+import { useImportDoc } from '@/features/docs/doc-management/api/useImportDoc';
 import { useCmdK } from '@/hook/useCmdK';
 
 import { useLeftPanelStore } from '../stores';
 
-import { LeftPanelHeaderButton } from './LeftPanelHeaderButton';
-
 export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const { authenticated } = useAuth();
-  const isDoc = router.pathname === '/docs/[id]';
-
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [isImportFilesModalOpen, setIsImportFilesModalOpen] = useState(false);
 
   const openSearchModal = useCallback(() => {
     const isEditorToolbarOpen =
@@ -35,9 +36,73 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
   useCmdK(openSearchModal);
   const { togglePanel } = useLeftPanelStore();
 
+  const { mutate: createDoc, isPending: isCreatingDoc } = useCreateDoc({
+    onSuccess: (doc) => {
+      router.push(`/docs/${doc.id}`);
+      togglePanel();
+    },
+  });
+
+  const { mutate: importDoc, status: importDocStatus } = useImportDoc({
+    onSuccess: (doc) => {
+      router.push(`/docs/${doc.id}`);
+      togglePanel();
+    },
+  });
+
+  const uploadDocImportStatus: undefined | 'uploading' | 'error' | 'success' =
+    useMemo(() => {
+      if (importDocStatus === 'idle') {
+        return undefined;
+      }
+
+      if (importDocStatus === 'pending') {
+        return 'uploading';
+      }
+
+      return importDocStatus;
+    }, [importDocStatus]);
+
   const goToHome = () => {
-    void router.push('/');
+    router.push('/');
     togglePanel();
+  };
+
+  const createNewDoc = () => {
+    createDoc();
+  };
+
+  const handleImportFilesystem = () => {
+    const fileInput = document.querySelector<HTMLInputElement>(
+      '.--docs--left-panel-header input[type="file"]'
+    );
+    if (fileInput) {
+      fileInput.onchange = uploadChanged;
+      fileInput.click();
+    }
+  };
+
+  const handleImportNotion = () => {
+    const baseApiUrl = process.env.NEXT_PUBLIC_API_ORIGIN;
+    const notionAuthUrl = `${baseApiUrl}/api/v1.0/notion_import/redirect`;
+    window.location.href = notionAuthUrl;
+  };
+
+  const handleImportFiles = () => {
+    setIsImportFilesModalOpen(true);
+  };
+
+  type FileEvent = { target: { value: File[] } };
+
+  const uploadChanged = (event: FileEvent) => {
+    const file = event.target.value[0];
+
+    if (!file) {
+      return;
+    }
+
+    importDoc(file);
+    setIsImportFilesModalOpen(false);
   };
 
   return (
@@ -71,26 +136,36 @@ export const LeftPanelHeader = ({ children }: PropsWithChildren) => {
                 />
               )}
             </Box>
-
             {authenticated && (
-              <>
-                <LeftPanelHeaderButton />
-              </>
+              <DropdownMenu
+                showArrow
+                disabled={isCreatingDoc}
+                options={[
+                  { label: t('From your computer'), disabled: true },
+                  { label: t('Open file...'), callback: handleImportFilesystem, padding: { vertical: 'xs', horizontal: 'md' } },
+                  { label: t('Import files...'), callback: handleImportFiles, padding: { vertical: 'xs', horizontal: 'md' } },
+                  { label: t('From connected apps'), disabled: true },
+                  { label: t('Import from Notion'), callback: handleImportNotion, padding: { vertical: 'xs', horizontal: 'md' } },
+                ]}
+              >
+                <Button role="button" tabIndex={0} onClick={createNewDoc} disabled={isCreatingDoc}>
+                  {t('New doc')}
+                </Button>
+              </DropdownMenu>
             )}
           </Box>
         </SeparatedSection>
         {children}
       </Box>
       {isSearchModalOpen && (
-        <DocSearchModal
-          onClose={closeSearchModal}
-          isOpen={isSearchModalOpen}
-          showFilters={isDoc}
-          defaultFilters={{
-            target: isDoc ? DocSearchTarget.CURRENT : undefined,
-          }}
-        />
+        <DocSearchModal onClose={closeSearchModal} isOpen={isSearchModalOpen} />
       )}
+      <DocImportModal
+        isOpen={isImportFilesModalOpen}
+        onClose={() => setIsImportFilesModalOpen(false)}
+        onUpload={uploadChanged}
+        uploadState={uploadDocImportStatus}
+      />
     </>
   );
 };
