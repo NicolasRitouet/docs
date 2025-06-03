@@ -1,10 +1,9 @@
-import { Modal, ModalSize, FileUploader } from '@openfun/cunningham-react';
+import { FileUploader, Modal, ModalSize } from '@openfun/cunningham-react';
 import { t } from 'i18next';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { BoxProps } from '@/components';
-
+// Réintroduction du type FileEvent pour compatibilité
 type FileEvent = { target: { value: File[] } };
 
 type DocImportModalProps = {
@@ -17,6 +16,7 @@ type DocImportModalProps = {
 const FadeModal = styled(Modal)<{ visible: boolean }>`
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
+  size: medium;
 `;
 
 export const DocImportModal = ({

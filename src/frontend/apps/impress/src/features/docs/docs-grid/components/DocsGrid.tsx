@@ -1,12 +1,12 @@
 import { Button } from '@openfun/cunningham-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InView } from 'react-intersection-observer';
-import { useState } from 'react';
 import { css } from 'styled-components';
 
 import { Box, Card, Text } from '@/components';
-import { useImportDoc } from '@/features/docs/doc-management/api/useImportDoc';
 import { DocDefaultFilter, useInfiniteDocs } from '@/docs/doc-management';
+import { useImportDoc } from '@/features/docs/doc-management/api/useImportDoc';
 import { useResponsiveStore } from '@/stores';
 
 import { useResponsiveDocGrid } from '../hooks/useResponsiveDocGrid';
