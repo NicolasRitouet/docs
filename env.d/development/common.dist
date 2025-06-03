@@ -67,3 +67,4 @@ Y_PROVIDER_API_KEY=yprovider-api-key
 
 # Frontend
 FRONTEND_THEME=default
+FRONTEND_URL=http://localhost:3000
