@@ -482,7 +482,10 @@
       "Share with {{count}} users_one": "Share with {{count}} user",
       "Shared with {{count}} users_many": "Shared with {{count}} users",
       "Shared with {{count}} users_one": "Shared with {{count}} user",
-      "Shared with {{count}} users_other": "Shared with {{count}} users"
+      "Shared with {{count}} users_other": "Shared with {{count}} users",
+      "Import in progress...": "Import in progress...",
+      "Please stay on this page and be patient": "Please stay on this page and be patient",
+      "Import from Outline": "Import from Outline"
     }
   },
   "es": {
@@ -838,6 +841,9 @@
       "Open Source": "Open Source",
       "Open the document options": "Ouvrir les options du document",
       "Open the header menu": "Ouvrir le menu d'en-tête",
+      "Import in progress...": "Import en cours...",
+      "Please stay on this page and be patient": "Veuillez rester sur cette page et patienter",
+      "Import from Outline": "Importer depuis Outline",
       "Open document actions menu": "Ouvrir le menu d'actions du document",
       "Open the menu of actions for the document: {{title}}": "Ouvrir le menu des actions du document : {{title}}",
       "Main content": "Contenu principal",
