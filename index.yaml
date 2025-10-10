@@ -3,6 +3,15 @@ entries:
   docs:
   - apiVersion: v2
     appVersion: latest
+    created: "2025-10-10T13:26:19.736934257Z"
+    digest: 980186ff21dc87bd0ae20ac34899004dabd58e9397c56688fc321a103ad2b490
+    name: docs
+    type: application
+    urls:
+    - https://NicolasRitouet.github.io/docs/docs-3.7.0.tgz
+    version: 3.7.0
+  - apiVersion: v2
+    appVersion: latest
     created: "2025-09-12T20:46:43.237209064Z"
     digest: 1eb8393dffb3169357736a0401b3184a9d506adce7ee20fd47c71c08b3882329
     name: docs
@@ -289,4 +298,4 @@ entries:
     urls:
     - https://suitenumerique.github.io/docs/docs-0.0.1.tgz
     version: 0.0.1
-generated: "2025-09-12T20:46:43.235531644Z"
+generated: "2025-10-10T13:26:19.7352761Z"
